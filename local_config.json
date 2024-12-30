@@ -21,6 +21,9 @@
     },
     "Admin_COLLECTION": {
         "collection_name": "Admin"
+    },
+    "Web_Requests":{
+        "collection_name":"Request_Call"
     }
 },
 "DASHBOARD_GSHEET":{

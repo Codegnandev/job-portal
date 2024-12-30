@@ -16,7 +16,7 @@ class ValidateOTP(Resource):
         data = request.json
         email = data.get("email")
         otp = data.get("otp")
-
+        print('*'*20,email,otp)
         # Check if the database exists, if not, create it
         if self.db_name not in self.client.list_database_names():
             self.client[self.db_name]

@@ -97,7 +97,7 @@ class JobEmailSender(threading.Thread):
         # Send email using SMTP (for Gmail)
         smtp_server = smtplib.SMTP('smtp.gmail.com', 587)  # Update SMTP server details for Gmail
         smtp_server.starttls()
-        smtp_server.login(sender_email, 'Codegnan@0818')  # Update sender's email and password
+        smtp_server.login(sender_email, 'tlmc pumi pxhy gwko')#'Codegnan@0818'  # Update sender's email and password
         smtp_server.sendmail(sender_email, recipient_email, msg.as_string())
         smtp_server.quit()
 

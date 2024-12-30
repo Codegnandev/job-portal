@@ -19,7 +19,6 @@ from web.list_openings import ListOpenings
 from web.studentsignup import StudentSignup
 from web.studentlogin import StudentLogin
 from web.jobpostings import JobPosting  # Import JobPosting from jobpostings module
-#datta
 from web.update_resume import UpdateResume
 from web.student_OTP import StudentVerification
 from web.validateOTP import ValidateOTP
@@ -29,6 +28,15 @@ from pymongo import MongoClient
 from web.admin import AdminLogin
 from web.all_student import GetAllStudents
 from web.all_resumes import AllResumes
+from web.edit_job import EditJob
+from web.forgotpwd import ForgotPwd
+from web.updatepwd import Updatepassword
+from web.bde_forgotpwd import BDE_ForgotPWD
+from web.bde_verifyotp import BDE_ValidateOTP
+from web.bde_updatepwd import  BDE_updatePWD
+from web.Request_otp import Quick_Request
+from web.Request_call_form import Request_Callback
+
 
 with open('local_config.json', 'r') as config_file:
     config_data = json.load(config_file)
@@ -58,6 +66,7 @@ class MyFlask(Flask):
         self.company_login_collection = MONGO_CONFIG["COMPANY"]["collection_name"]
         self.otp_collection = MONGO_CONFIG["OTP_COLLECTION"]["collection_name"]
         self.admin_collection = MONGO_CONFIG["Admin_COLLECTION"]["collection_name"]
+        self.request_call = MONGO_CONFIG["Web_Requests"]["collection_name"]
         
         self.DASHBOARDSHEET = config_data["DASHBOARD_GSHEET"]["url"]
         self.DASHBOARD_COLLECTION = config_data["DASHBOARD_GSHEET"]["collection"]
@@ -74,7 +83,7 @@ class MyFlask(Flask):
                 'db' : "codegnan_prod",
                 'collection' : self.student_login_collection
                 }
-        ),
+        )
         api.add_resource(
             StudentLogin,
             "/api/v1/studentlogin",
@@ -83,7 +92,7 @@ class MyFlask(Flask):
                 'db' : "codegnan_prod",
                 'collection' : self.student_login_collection
                 }
-        ),
+        )
         api.add_resource(
             BdeSignup,
             "/api/v1/bdesignup",
@@ -92,7 +101,7 @@ class MyFlask(Flask):
                 'db' : "codegnan_prod",
                 'collection' : self.bde_login_collection
             }
-        ),
+        )
         api.add_resource(
             BdeLogin,
             "/api/v1/bdelogin",
@@ -101,7 +110,7 @@ class MyFlask(Flask):
                 'db_name' : "codegnan_prod",
                 'collection' : self.bde_login_collection
             }
-        ),
+        )
         api.add_resource(
             CompanyLogin,
             "/api/v1/companylogin",
@@ -110,7 +119,7 @@ class MyFlask(Flask):
                 'db' : "codegnan_prod",
                 'collection' : self.company_login_collection
             }
-        ),
+        )
         api.add_resource(
             CompanySignup,
             "/api/v1/companysignup",
@@ -119,7 +128,7 @@ class MyFlask(Flask):
                 'db' : "codegnan_prod",
                 'collection' : self.company_login_collection
             }
-        ),
+        )
         api.add_resource(
             JobPosting,
             "/api/v1/postjobs",
@@ -129,7 +138,7 @@ class MyFlask(Flask):
                 'collection': self.job_details_collection,
                 'student_collection': self.student_login_collection
             }
-        ),
+        )
         api.add_resource(
             ListOpenings,
             "/api/v1/listopenings",
@@ -138,7 +147,7 @@ class MyFlask(Flask):
                 'db' : "codegnan_prod",
                 'collection': self.job_details_collection
             }
-        ),
+        )
         api.add_resource(
             JobApplication,
             "/api/v1/applyforjob",
@@ -148,7 +157,7 @@ class MyFlask(Flask):
                 'job_collection': self.job_details_collection,
                 'student_collection': self.student_login_collection
             }
-        ),
+        )
         api.add_resource(
             GetAppliedStudentList,
             "/api/v1/getappliedstudentslist",
@@ -158,7 +167,7 @@ class MyFlask(Flask):
                 'job_collection': self.job_details_collection,
                 'student_collection': self.student_login_collection
             }
-        ),
+        )
         api.add_resource(
             GetAppliedJobsList,
             "/api/v1/getappliedjobslist",
@@ -237,7 +246,7 @@ class MyFlask(Flask):
         )
         api.add_resource(
             ValidateOTP,
-            "/api/v1/verifystudentotp",
+            "/api/v1/verifyotp",
             resource_class_kwargs={
                 'client' : self.client,
                 'db' : "codegnan_prod",
@@ -271,9 +280,81 @@ class MyFlask(Flask):
                 'student_collection': self.student_login_collection
             }
         )
-
+        api.add_resource(
+            EditJob,
+            "/api/v1/editjob",
+            resource_class_kwargs = {
+                'client' : self.client, 
+                'db': "codegnan_prod",
+                "job_collection": self.job_details_collection
+            }
+        )
+        api.add_resource(
+            ForgotPwd,
+            "/api/v1/forgotpassword",
+            resource_class_kwargs={
+                'client' : self.client,
+                'db' : "codegnan_prod",
+                'otp_collection': self.otp_collection,
+                'std_collection':self.student_login_collection
+            }
+        )
+        api.add_resource(
+            Updatepassword,
+            "/api/v1/updatepassword",
+            resource_class_kwargs = {
+                'client' : self.client, 
+                'db': "codegnan_prod",
+                "student_collection": self.student_login_collection
+            }
+        )
+        api.add_resource(
+            BDE_ForgotPWD,
+            "/api/v1/bdeforgotpwd",
+            resource_class_kwargs={
+                'client' : self.client,
+                'db' : "codegnan_prod",
+                'otp_collection': self.otp_collection,
+                'bde_collection':self.bde_login_collection
+            }
+        )
+        api.add_resource(
+            BDE_ValidateOTP,
+            "/api/v1/verifybdeotp",
+            resource_class_kwargs={
+                'client' : self.client,
+                'db' : "codegnan_prod",
+                'otp_collection': self.otp_collection
+            }
+        )
+        api.add_resource(
+            BDE_updatePWD,
+            "/api/v1/bdeupdatepwd",
+            resource_class_kwargs={
+            'client':self.client,
+            'db':"codegnan_prod",
+            'bde_collection':self.bde_login_collection
+            }
+        )
+        api.add_resource(
+            Quick_Request,
+            "/api/v1/callrequest",
+            resource_class_kwargs={
+                'client' : self.client,
+                'db' : "codegnan_prod",
+                'Req_collection': self.otp_collection
+            }
+        )
+        api.add_resource(
+            Request_Callback,
+            "/api/v1/requestform",
+            resource_class_kwargs={
+                'client':self.client,
+                'db':'codegnan_prod',
+                "Req_collection":self.request_call
+            }       
+        )
 app = MyFlask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "https://placements.codegnan.com"}})
 app.add_api()
 CORS(app,support_credentials=True)
 if __name__ == '__main__':
