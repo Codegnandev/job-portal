@@ -1,0 +1,32 @@
+{
+    "MONGO_CONFIG": {
+        "url": "mongodb+srv://codegnandevelopment:codegnandevelopment@cluster0.yy9e5fa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+        "db_name": "codegnan_prod",  
+        "collection_name": "users_verification"  ,
+    
+    "BDE_LOGIN":{
+        "collection_name":"bde_user_data"
+    },
+    "JOBS":{
+        "collection_name":"jobs_listing"
+    },
+    "STUDENT_LOGIN":{
+        "collection_name":"student_login_details"
+    },
+    "COMPANY":{
+        "collection_name":"company_data_prod"
+    },
+    "OTP_COLLECTION": {
+        "collection_name": "otp_verification"
+    },
+    "Admin_COLLECTION": {
+        "collection_name": "Admin"
+    }
+},
+"DASHBOARD_GSHEET":{
+    "url":"https://docs.google.com/spreadsheets/d/1waUnCAzLnLbiKABbGNppDZ6Vj-vpV0mNy-ypLp1yZ2Q/edit?gid=0#gid=0",
+    "sheetname":"Sheet1",
+    "collection":"dashboard_data"
+}
+
+}
